@@ -26,7 +26,7 @@ export default function AuthLayout({children}: {children: React.ReactNode}) {
                 {children}
               </div>
             </main>
-            <Image alt="cashier.jpg" className="w-1/2 h-screen object-cover z-10" width={100} height={100} src={"/img/cashier.jpg"} unoptimized>
+            <Image alt="cashier.jpg" className="w-1/2 h-screen object-cover z-10 rounded-l-xl" width={100} height={100} src={"/img/cashier.jpg"} unoptimized>
             </Image>            
         </div>
     );

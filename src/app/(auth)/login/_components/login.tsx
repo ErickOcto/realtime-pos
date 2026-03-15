@@ -2,15 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { LockPasswordIcon, Mail01FreeIcons } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Controller, useForm } from "react-hook-form"
+import { Field, FieldGroup } from "@/components/ui/field";
+import { useForm } from "react-hook-form"
 import { LoginForm, loginSchema } from "@/app/validations/auth-validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { INITIAL_LOGIN_FORM } from "@/constants/auth-constant";
-import { toast } from "sonner";
+import FormInput from "@/components/common/form-input";
+import { Email, LockPasswordIcon } from "@hugeicons/core-free-icons";
 
 
 export default function Login() {  
@@ -19,7 +17,9 @@ export default function Login() {
         defaultValues: INITIAL_LOGIN_FORM,
     });
 
-    const onSubmit = form.handleSubmit(async (data) => {});
+    const onSubmit = form.handleSubmit(async (data) => {
+        console.log(data);
+    });
     return (
         <Card>
             <CardHeader className="text-center">
@@ -28,58 +28,8 @@ export default function Login() {
             <CardContent>
                 <form id="login-form" onSubmit={onSubmit}>
                     <FieldGroup>
-                        <Controller
-                          name="email"
-                          control={form.control}
-                          render={({ field, fieldState }) => (
-                            <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel aria-required htmlFor="login-form-email">
-                                  Email
-                                </FieldLabel>
-                                <InputGroup>
-                                    <InputGroupInput {...field} 
-                                        id="login-form-email"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="Enter your email"
-                                        autoComplete="off"
-                                        type="email"
-                                    />
-                                    <InputGroupAddon align={"inline-start"}>
-                                        <HugeiconsIcon icon={Mail01FreeIcons} size={24} strokeWidth={2} className="text-muted-foreground"></HugeiconsIcon>
-                                    </InputGroupAddon>
-                                </InputGroup>
-                                {fieldState.invalid && (
-                                  <FieldError errors={[fieldState.error]} />
-                                )}
-                            </Field>
-                          )}
-                        />
-                        <Controller
-                          name="password"
-                          control={form.control}
-                          render={({ field, fieldState }) => (
-                            <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel aria-required htmlFor="login-form-password">
-                                  Password
-                                </FieldLabel>
-                                <InputGroup>
-                                    <InputGroupInput {...field} 
-                                        id="login-form-password"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="Enter your password"
-                                        autoComplete="off"
-                                        type="password"
-                                    />
-                                    <InputGroupAddon align={"inline-start"}>
-                                        <HugeiconsIcon icon={LockPasswordIcon} size={24} strokeWidth={2} className="text-muted-foreground"></HugeiconsIcon>
-                                    </InputGroupAddon>
-                                </InputGroup>
-                                {fieldState.invalid && (
-                                  <FieldError errors={[fieldState.error]} />
-                                )}
-                            </Field>
-                          )}
-                        />                    
+                        <FormInput form={form} name="email" label="Email" placeholder="Enter your email" type="email" icon={Email} id="login-form-email"/>                 
+                        <FormInput form={form} name="password" label="Password" placeholder="Enter your password" type="password" icon={LockPasswordIcon} id="login-form-password" description="Password minimum contains 8 characters"/>                 
                     </FieldGroup>
                 </form>
             </CardContent>    
