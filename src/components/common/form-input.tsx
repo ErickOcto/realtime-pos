@@ -13,10 +13,10 @@ type FormInputProps<T extends FieldValues> = {
     type?: string;
     icon?: IconSvgElement;
     id?: string;
-    description?: string;
+    description?: string | null;
 };
 
-export default function FormInput<T extends FieldValues>({form, name, label, placeholder, type = 'text', icon = IcoIcon, id, description = ''}: FormInputProps<T>) {
+export default function FormInput<T extends FieldValues>({form, name, label, placeholder, type = 'text', icon = IcoIcon, id, description}: FormInputProps<T>) {
     return (
         <Controller
         name={name}
@@ -51,7 +51,7 @@ export default function FormInput<T extends FieldValues>({form, name, label, pla
                     <HugeiconsIcon icon={icon} size={24} strokeWidth={2} className="text-muted-foreground"></HugeiconsIcon>
                 </InputGroupAddon>
             </InputGroup>
-            <FieldDescription>{description}</FieldDescription>
+            {description && <FieldDescription>{description}</FieldDescription>}
             {fieldState.invalid && (
               <FieldError errors={[fieldState.error]} />
             )}

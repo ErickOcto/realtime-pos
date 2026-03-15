@@ -1,8 +1,6 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import z from "zod";
 
-export const loginSchema = z.object({
+export const loginSchemaForm = z.object({
   email: z
     .string().email('Please enter a valid email').min(5, "Email is required"),
   password: z
@@ -11,4 +9,4 @@ export const loginSchema = z.object({
     .max(30, "Password must be at most 30 characters."),
 });
 
-export type LoginForm = z.infer<typeof loginSchema>;
+export type LoginForm = z.infer<typeof loginSchemaForm>;
