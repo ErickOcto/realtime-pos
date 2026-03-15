@@ -20,7 +20,6 @@ export default function AuthLayout({children}: {children: React.ReactNode}) {
                   </div>
                   <h1 className="text-2xl font-bold ml-2">Realtime POS</h1>
                 </div>
-                <p className="text-muted-foreground text-xs">ERICK JAGO NEXTJS TYPESCRIPT EZ MONEY</p>
               </div>
               <div className="w-4/5 mx-auto">
                 {children}

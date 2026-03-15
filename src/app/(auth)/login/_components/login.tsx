@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldGroup } from "@/components/ui/field";
 import { useForm } from "react-hook-form"
 import { LoginForm, loginSchemaForm } from "@/app/validations/auth-validation";
@@ -12,6 +12,8 @@ import { Email, LoaderCircle, LockPasswordIcon } from "@hugeicons/core-free-icon
 import { startTransition, useActionState, useEffect } from "react";
 import { login } from "../actions";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { toast } from "sonner";
+import Link from "next/link";
 
 
 export default function Login() {  
@@ -34,6 +36,9 @@ export default function Login() {
 
     useEffect(() => {
         if (loginState?.status === 'error') {
+            toast.error('Login Failed', {
+                description: loginState.errors?._form?.[0],
+            });
             startTransition(() => {
                 loginAction(null);
             });
@@ -41,9 +46,11 @@ export default function Login() {
     }, [loginState]);
 
     return (
+    <>
         <Card>
             <CardHeader className="text-center">
-                <CardTitle className="text-xl">Login</CardTitle>
+                <CardTitle className="text-xl">Welcome back.</CardTitle>
+                <CardDescription>Securely sign in to your workstation to start processing orders.</CardDescription>
             </CardHeader>
             <CardContent>
                 <form id="login-form" onSubmit={onSubmit}>
@@ -53,16 +60,20 @@ export default function Login() {
                     </FieldGroup>
                 </form>
             </CardContent>    
-            <CardFooter>
+            <CardFooter className="flex-col gap-4">
                 <Field orientation="horizontal" className="w-full grid grid-cols-2 gap-2">
                     <Button className="w-full" type="button" variant="outline" onClick={() => form.reset()}>
                         Reset
                     </Button>
                     <Button className="w-full" type="submit" form="login-form">
-                        {isPendingLogin ? <HugeiconsIcon icon={LoaderCircle} className="animate-spin text-white"></HugeiconsIcon> : 'Login'}
+                        {isPendingLogin ? <HugeiconsIcon icon={LoaderCircle} className="animate-spin text-white"></HugeiconsIcon> : 'Access Dashboard'}
                     </Button>
                 </Field>
             </CardFooter>        
         </Card>
+        <p className="text-center text-sm text-muted-foreground mt-4">
+            Having trouble logging in? <Link href="/register" className="text-primary hover:underline">Get support</Link>
+        </p>
+    </>
     );
 }
