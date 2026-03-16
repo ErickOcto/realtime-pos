@@ -1,0 +1,76 @@
+"use client";
+
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Sidebar, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
+import { EllipsisVertical, Logout, ThreeDViewIcon, User } from "@hugeicons/core-free-icons";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useSidebar } from "../ui/sidebar";
+
+export default function AppSidebar() {
+    const {isMobile} = useSidebar();
+    return (
+        <Sidebar>
+            <SidebarHeader>
+                <SidebarMenu>
+                    <SidebarMenuItem className="mx-auto">
+                        <SidebarMenuButton size={"lg"} asChild>
+                            <div className="flex items-center justify-items-center mx-auto">
+                                <div className="rounded-md bg-primary p-2 text-white">
+                                    <HugeiconsIcon icon={ThreeDViewIcon} size={24} strokeWidth={1.5}></HugeiconsIcon>
+                                </div>
+                                <h3 className="text-lg font-bold ml-1">Realtime POS</h3>
+                            </div>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarHeader>
+            <SidebarFooter>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <SidebarMenuButton size={"lg"} className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+                                    <Avatar className="h-8 w-8 rounded-lg">
+                                        <AvatarImage src="" alt=""></AvatarImage>
+                                        <AvatarFallback className="h-8 w-8 rounded-lg">
+                                            <HugeiconsIcon icon={User}></HugeiconsIcon>
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    <div className="leading-tight">
+                                        <h4 className="truncate font-medium">Frederick Octo</h4>
+                                        <p className="text-muted-foreground text-xs truncate">admin</p>
+                                    </div>
+                                    <HugeiconsIcon icon={EllipsisVertical} className="ml-auto size-4"></HugeiconsIcon>
+                                </SidebarMenuButton>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="min-w-56 rounded-lg" side={isMobile ? 'bottom' : 'right'} align='end' sideOffset={4}>
+                                <DropdownMenuLabel className="p-0 font-normal">
+                                    <div className="flex items-center gap-2 px-1 py-1.5">
+                                        <Avatar className="h-8 w-8 rounded-lg">
+                                            <AvatarImage src="" alt=""></AvatarImage>
+                                            <AvatarFallback className="h-8 w-8 rounded-lg">
+                                                <HugeiconsIcon icon={User}></HugeiconsIcon>
+                                            </AvatarFallback>
+                                        </Avatar>
+                                        <div className="leading-tight">
+                                            <h4 className="truncate font-medium">Frederick Octo</h4>
+                                            <p className="text-muted-foreground text-xs truncate">admin</p>
+                                        </div>
+                                    </div>
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator/>
+                                <DropdownMenuGroup>
+                                    <DropdownMenuItem>
+                                        <HugeiconsIcon icon={Logout}></HugeiconsIcon>
+                                        Logout
+                                    </DropdownMenuItem>
+                                </DropdownMenuGroup>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarFooter>
+        </Sidebar>
+    );
+}
