@@ -1,16 +1,26 @@
 "use client";
 
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Sidebar, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 import { EllipsisVertical, Logout, ThreeDViewIcon, User } from "@hugeicons/core-free-icons";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useSidebar } from "../ui/sidebar";
+import { SIDEBAR_MENU_LIST, SidebarMenuKey } from "@/constants/sidebar-constant";
+import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 export default function AppSidebar() {
     const {isMobile} = useSidebar();
+    const profile = {
+        name: "Frederick Octo",
+        role: "admin",
+        avatar_url: "",
+    }
+
+    const pathname = usePathname();
     return (
-        <Sidebar>
+        <Sidebar collapsible="icon">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem className="mx-auto">
@@ -25,6 +35,27 @@ export default function AppSidebar() {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
+            <SidebarContent>
+                <SidebarGroup>
+                    <SidebarGroupContent className="flex flex-col gap-2">
+                        <SidebarMenu>
+                            {SIDEBAR_MENU_LIST[profile.role as SidebarMenuKey]?.map((item) => (
+                                <SidebarMenuItem key={item.title}>
+                                    <SidebarMenuButton asChild size={"lg"} tooltip={item.title}>
+                                        <a 
+                                            href={item.url}
+                                            className={cn("px-4 py-3 h-auto", {"bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground": pathname === item.url})}
+                                        >
+                                            {item.icon && <HugeiconsIcon icon={item.icon} />}
+                                            <span>{item.title}</span>
+                                        </a>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                            ),)}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+            </SidebarContent>
             <SidebarFooter>
                 <SidebarMenu>
                     <SidebarMenuItem>
