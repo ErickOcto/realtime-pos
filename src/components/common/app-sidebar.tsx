@@ -9,6 +9,7 @@ import { useSidebar } from "../ui/sidebar";
 import { SIDEBAR_MENU_LIST, SidebarMenuKey } from "@/constants/sidebar-constant";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import { signOut } from "@/actions/auth-action";
 
 export default function AppSidebar() {
     const {isMobile} = useSidebar();
@@ -23,7 +24,7 @@ export default function AppSidebar() {
         <Sidebar collapsible="icon">
             <SidebarHeader>
                 <SidebarMenu>
-                    <SidebarMenuItem className="mx-auto">
+                    <SidebarMenuItem >
                         <SidebarMenuButton size={"lg"} asChild>
                             <div className="flex items-center justify-items-center mx-auto">
                                 <div className="rounded-md bg-primary p-2 text-white">
@@ -92,7 +93,7 @@ export default function AppSidebar() {
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator/>
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem>
+                                    <DropdownMenuItem onClick={signOut}>
                                         <HugeiconsIcon icon={Logout}></HugeiconsIcon>
                                         Logout
                                     </DropdownMenuItem>

@@ -11,18 +11,22 @@ export default function DashboardBreadCrumb() {
         <Breadcrumb>
             <BreadcrumbList>
                 {pathSegment.map((segment, index) => (
-                    <BreadcrumbItem key={index}>
+                    <div className="inline-flex items-center gap-1.5" key={index}>
                         {index < pathSegment.length - 1 ? (
-                            <BreadcrumbLink href={`/${pathSegment.slice(0, index + 1).join("/")}`} className="capitalize">
-                                {segment}
-                            </BreadcrumbLink>
+                            <BreadcrumbItem>
+                                <BreadcrumbLink href={`/${pathSegment.slice(0, index + 1).join("/")}`} className="capitalize">
+                                    {segment}
+                                </BreadcrumbLink>
+                            </BreadcrumbItem>
                         ) : (
-                            <BreadcrumbPage className="capitalize">
-                                {segment}
-                            </BreadcrumbPage>
+                            <BreadcrumbItem key={index}>
+                                <BreadcrumbPage className="capitalize">
+                                    {segment}
+                                </BreadcrumbPage>
+                            </BreadcrumbItem>
                         )}
                         {index < pathSegment.length - 1 && <BreadcrumbSeparator/>}
-                    </BreadcrumbItem>
+                    </div>
                 ))}
             </BreadcrumbList>
         </Breadcrumb>
