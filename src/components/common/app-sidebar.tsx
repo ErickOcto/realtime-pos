@@ -10,14 +10,11 @@ import { SIDEBAR_MENU_LIST, SidebarMenuKey } from "@/constants/sidebar-constant"
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { signOut } from "@/actions/auth-action";
+import { useAuthStore } from "@/stores/auth-store";
 
 export default function AppSidebar() {
     const {isMobile} = useSidebar();
-    const profile = {
-        name: "Frederick Octo",
-        role: "admin",
-        avatar_url: "",
-    }
+    const profile = useAuthStore((state) => state.profile);
 
     const pathname = usePathname();
     return (
@@ -40,7 +37,7 @@ export default function AppSidebar() {
                 <SidebarGroup>
                     <SidebarGroupContent className="flex flex-col gap-2">
                         <SidebarMenu>
-                            {SIDEBAR_MENU_LIST[profile.role as SidebarMenuKey]?.map((item) => (
+                            {SIDEBAR_MENU_LIST[profile?.role as SidebarMenuKey]?.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild size={"lg"} tooltip={item.title}>
                                         <a 
@@ -64,14 +61,14 @@ export default function AppSidebar() {
                             <DropdownMenuTrigger asChild>
                                 <SidebarMenuButton size={"lg"} className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
                                     <Avatar className="h-8 w-8 rounded-lg">
-                                        <AvatarImage src="" alt=""></AvatarImage>
+                                        <AvatarImage src={profile?.avatar_url} alt={profile?.name}></AvatarImage>
                                         <AvatarFallback className="h-8 w-8 rounded-lg">
-                                            <HugeiconsIcon icon={User}></HugeiconsIcon>
+                                            {profile?.name?.charAt(0).toUpperCase()}
                                         </AvatarFallback>
                                     </Avatar>
                                     <div className="leading-tight">
-                                        <h4 className="truncate font-medium">Frederick Octo</h4>
-                                        <p className="text-muted-foreground text-xs truncate">admin</p>
+                                        <h4 className="truncate font-medium capitalize">{profile?.name}</h4>
+                                        <p className="text-muted-foreground text-xs truncate capitalize">{profile?.role}</p>
                                     </div>
                                     <HugeiconsIcon icon={EllipsisVertical} className="ml-auto size-4"></HugeiconsIcon>
                                 </SidebarMenuButton>
@@ -80,14 +77,14 @@ export default function AppSidebar() {
                                 <DropdownMenuLabel className="p-0 font-normal">
                                     <div className="flex items-center gap-2 px-1 py-1.5">
                                         <Avatar className="h-8 w-8 rounded-lg">
-                                            <AvatarImage src="" alt=""></AvatarImage>
+                                            <AvatarImage src={profile?.avatar_url} alt={profile?.name}></AvatarImage>
                                             <AvatarFallback className="h-8 w-8 rounded-lg">
-                                                <HugeiconsIcon icon={User}></HugeiconsIcon>
+                                                {profile?.name?.charAt(0).toUpperCase()}
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="leading-tight">
-                                            <h4 className="truncate font-medium">Frederick Octo</h4>
-                                            <p className="text-muted-foreground text-xs truncate">admin</p>
+                                            <h4 className="truncate font-medium capitalize">{profile?.name}</h4>
+                                            <p className="text-muted-foreground text-xs truncate capitalize">{profile?.role}</p>
                                         </div>
                                     </div>
                                 </DropdownMenuLabel>

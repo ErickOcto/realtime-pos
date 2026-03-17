@@ -13,3 +13,11 @@ export const INITIAL_AUTH_LOGIN_FORM = {
         _form: [],
     },
 };
+
+export const INITIAL_STATE_PROFILE = {
+    id: "",
+    name: "",
+    role: "",
+    avatar_url: "",
+
+}

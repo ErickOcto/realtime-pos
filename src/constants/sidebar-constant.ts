@@ -1,4 +1,4 @@
-import { Album, Armchair, LayoutDashboard, MenuSquareIcon, User } from "@hugeicons/core-free-icons";
+import { LayoutDashboard, MenuRestaurantIcon, MenuSquareIcon, RestaurantTableIcon, User03Icon } from "@hugeicons/core-free-icons";
 
 export const SIDEBAR_MENU_LIST = {
     admin: [
@@ -10,7 +10,7 @@ export const SIDEBAR_MENU_LIST = {
         {
             title: 'Order',
             url: '/order',
-            icon: Album,
+            icon: MenuRestaurantIcon,
         },
         {
             title: 'Menu',
@@ -20,12 +20,12 @@ export const SIDEBAR_MENU_LIST = {
         {
             title: 'Table',
             url: '/admin/table',
-            icon: Armchair,
+            icon: RestaurantTableIcon,
         },
         {
             title: 'User',
             url: '/admin/user',
-            icon: User,
+            icon: User03Icon,
         }        
     ],
     user: [
