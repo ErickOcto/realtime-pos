@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip"
 import AuthStoreProvider from "@/providers/auth-store-provider";
 import { cookies } from "next/headers";
+import ReactQueryProvider from "@/providers/react-query-provider";
 
 const publicSans = Public_Sans({subsets:['latin'],variable:'--font-sans'});
 
@@ -20,17 +21,19 @@ export default async function RootLayout({
     <html lang="en" className={cn("font-sans", publicSans.variable)} suppressHydrationWarning>
       <body>
         <AuthStoreProvider profile={profile}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <TooltipProvider>
-              {children}
-            </TooltipProvider>
-            <Toaster></Toaster>
-          </ThemeProvider>
+          <ReactQueryProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <TooltipProvider>
+                {children}
+              </TooltipProvider>
+              <Toaster></Toaster>
+            </ThemeProvider>
+          </ReactQueryProvider>
         </AuthStoreProvider>
       </body>
     </html>
