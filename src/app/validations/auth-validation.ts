@@ -26,7 +26,7 @@ export const createUserSchemaForm = z.object({
     .string()
     .min(3, "Role must be at least 3 characters.")
     .max(30, "Role must be at most 30 characters."),
-  // avatar_urL: z.union([z.string().min(1, 'Avatar URL is required'), z.instanceof(File)])
+  avatar_url: z.union([z.string().min(1, 'Avatar URL is required'), z.instanceof(File)])
 });
 
 export type CreateUserForm = z.infer<typeof createUserSchemaForm>;

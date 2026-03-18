@@ -5,14 +5,15 @@ import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHead
 import { FieldGroup } from "@/components/ui/field";
 import { INITIAL_CREATE_USER_FORM, INITIAL_STATE_CREATE_USER, ROLE_LIST } from "@/constants/auth-constant";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoaderCircle, LockPasswordIcon, UserIcon } from "@hugeicons/core-free-icons";
+import { Image, LoaderCircle, LockPasswordIcon, UserIcon } from "@hugeicons/core-free-icons";
 import { Email } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { startTransition, useActionState, useEffect } from "react";
+import { startTransition, useActionState, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { createUser } from "../actions";
 import FormSelect from "@/components/common/form-select";
+import FormImage from "@/components/common/form-image";
 
 export default function CreateUserDialog({ refetch }: { refetch: () => void }) {
     const form = useForm<CreateUserForm>({
@@ -20,13 +21,19 @@ export default function CreateUserDialog({ refetch }: { refetch: () => void }) {
         defaultValues: INITIAL_CREATE_USER_FORM,
     });
 
-    const [createUserState, createUserAction, isPendingCreateUser] = useActionState(createUser, INITIAL_STATE_CREATE_USER);
+    const [createUserState, createUserAction, isPendingCreateUser] =
+        useActionState(createUser, INITIAL_STATE_CREATE_USER);
 
-    const onSubmit = form.handleSubmit(async (data) => {
+    const [preview, setPreview] = useState<
+        { file: File; displayUrl: string } | undefined
+    >(undefined);
+
+    const onSubmit = form.handleSubmit((data) => {
         const formData = new FormData();
         Object.entries(data).forEach(([key, value]) => {
-            formData.append(key, value);
+            formData.append(key, key === 'avatar_url' ? preview?.file ?? '' : value);
         });
+
         startTransition(() => {
             createUserAction(formData);
         });
@@ -37,11 +44,12 @@ export default function CreateUserDialog({ refetch }: { refetch: () => void }) {
             toast.error('Create User Failed', {
                 description: createUserState.errors?._form?.[0],
             });
-        } else if (createUserState?.status === 'success') {
-            toast.success('Create User Success', {
-                description: 'User created successfully',
-            });
+        }
+
+        if (createUserState?.status === 'success') {
+            toast.success('Create User Success');
             form.reset();
+            setPreview(undefined);
             document.querySelector<HTMLButtonElement>('[data-state="open"]')?.click();
             refetch();
         }
@@ -60,7 +68,8 @@ export default function CreateUserDialog({ refetch }: { refetch: () => void }) {
                     <FormInput form={form} name="name" label="Name" placeholder="Enter your name" type="text" icon={UserIcon} id="create-user-form-name"/>                     
                     <FormInput form={form} name="email" label="Email" placeholder="Enter your email" type="email" icon={Email} id="create-user-form-email"/>                 
                     <FormInput form={form} name="password" label="Password" placeholder="Enter your password" type="password" icon={LockPasswordIcon} id="create-user-form-password" description="Password minimum contains 8 characters"/>   
-                    <FormSelect id="create-user-form-role" form={form} name="role" label="Role" selectItem={ROLE_LIST}/>                                                         
+                    <FormSelect id="create-user-form-role" form={form} name="role" label="Role" selectItem={ROLE_LIST}/>     
+                    <FormImage form={form} name="avatar_url" label="Avatar" icon={Image} id="create-user-form-avatar_url" preview={preview} setPreview={setPreview} />                                             
                 </FieldGroup>
             </form>
             <DialogFooter>
