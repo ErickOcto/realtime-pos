@@ -61,10 +61,7 @@ export default function Login() {
                 </form>
             </CardContent>    
             <CardFooter className="flex-col gap-4">
-                <Field orientation="horizontal" className="w-full grid grid-cols-2 gap-2">
-                    {/* <Button className="w-full" type="button" variant="outline" onClick={() => form.reset()}>
-                        Reset
-                    </Button> */}
+                <Field orientation="horizontal" className="w-full gap-2">
                     <Button className="w-full" type="submit" form="login-form">
                         {isPendingLogin ? <HugeiconsIcon icon={LoaderCircle} className="animate-spin text-white"></HugeiconsIcon> : 'Access Dashboard'}
                     </Button>
