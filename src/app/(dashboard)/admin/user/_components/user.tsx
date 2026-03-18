@@ -13,11 +13,12 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { toast } from "sonner";
+import CreateUserDialog from "./create-user-dialog";
 
 export default function UserManagement() {
     const supabase = createClient();
     const { currentPage, currentLimit, handleChangePage, handleChangeLimit, currentSearch, handleChangeSearch } = useDataTable();
-    const { data: users, isLoading } = useQuery({
+    const { data: users, isLoading, refetch } = useQuery({
         queryKey: ['users', currentPage, currentLimit, currentSearch],
         queryFn: async () => {
             const result = await supabase.from('profiles')
@@ -88,14 +89,7 @@ export default function UserManagement() {
                         <DialogTrigger asChild>
                             <Button>Add User</Button>
                         </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Add User</DialogTitle>
-                                <DialogDescription>
-                                    Add a new user to the system
-                                </DialogDescription>
-                            </DialogHeader>
-                        </DialogContent>
+                        <CreateUserDialog refetch={refetch}/>
                     </Dialog>
                 </div>
             </div>
