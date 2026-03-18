@@ -3,7 +3,7 @@ import FormInput from "@/components/common/form-input";
 import { Button } from "@/components/ui/button";
 import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { FieldGroup } from "@/components/ui/field";
-import { INITIAL_CREATE_USER_FORM, INITIAL_STATE_CREATE_USER } from "@/constants/auth-constant";
+import { INITIAL_CREATE_USER_FORM, INITIAL_STATE_CREATE_USER, ROLE_LIST } from "@/constants/auth-constant";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle, LockPasswordIcon, UserIcon } from "@hugeicons/core-free-icons";
 import { Email } from "@hugeicons/core-free-icons";
@@ -12,6 +12,7 @@ import { startTransition, useActionState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { createUser } from "../actions";
+import FormSelect from "@/components/common/form-select";
 
 export default function CreateUserDialog({ refetch }: { refetch: () => void }) {
     const form = useForm<CreateUserForm>({
@@ -56,11 +57,10 @@ export default function CreateUserDialog({ refetch }: { refetch: () => void }) {
             </DialogHeader>
             <form id="create-user-form" onSubmit={onSubmit}>
                 <FieldGroup>
+                    <FormInput form={form} name="name" label="Name" placeholder="Enter your name" type="text" icon={UserIcon} id="create-user-form-name"/>                     
                     <FormInput form={form} name="email" label="Email" placeholder="Enter your email" type="email" icon={Email} id="create-user-form-email"/>                 
-                    <FormInput form={form} name="password" label="Password" placeholder="Enter your password" type="password" icon={LockPasswordIcon} id="create-user-form-password" description="Password minimum contains 8 characters"/>  
-                    <FormInput form={form} name="name" label="Name" placeholder="Enter your name" type="text" icon={UserIcon} id="create-user-form-name"/>  
-                    <FormInput form={form} name="role" label="Role" placeholder="Enter your role" type="text" icon={UserIcon} id="create-user-form-role"/>                                                         
-                    {/* <FormInput form={form} name="avatar_url" label="Avatar URL" placeholder="Enter your avatar URL" type="text" icon={UserIcon} id="create-user-form-avatar_url"/>                       */}
+                    <FormInput form={form} name="password" label="Password" placeholder="Enter your password" type="password" icon={LockPasswordIcon} id="create-user-form-password" description="Password minimum contains 8 characters"/>   
+                    <FormSelect id="create-user-form-role" form={form} name="role" label="Role" selectItem={ROLE_LIST}/>                                                         
                 </FieldGroup>
             </form>
             <DialogFooter>

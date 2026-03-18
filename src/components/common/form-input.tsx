@@ -23,7 +23,7 @@ export default function FormInput<T extends FieldValues>({form, name, label, pla
         control={form.control}
         render={({ field, fieldState }) => (
         <Field data-invalid={fieldState.invalid}>
-            <FieldLabel aria-required htmlFor="login-form-email">
+            <FieldLabel aria-required htmlFor={id}>
               {label}
             </FieldLabel>
             <InputGroup>
