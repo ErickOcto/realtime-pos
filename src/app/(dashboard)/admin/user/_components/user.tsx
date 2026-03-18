@@ -1,12 +1,14 @@
 'use client'
 
 import DataTable from "@/components/common/data-table";
+import DropdownAction from "@/components/common/dropdown-action";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { USER_TABLE_HEADER } from "@/constants/user-constant";
+import useDataTable from "@/hooks/use-data-table";
 import { createClient } from "@/lib/supabase/client";
-import { Search } from "@hugeicons/core-free-icons";
+import { Delete, Edit, Search } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
@@ -14,33 +16,60 @@ import { toast } from "sonner";
 
 export default function UserManagement() {
     const supabase = createClient();
+    const { currentPage, currentLimit, handleChangePage, handleChangeLimit } = useDataTable();
     const { data: users, isLoading } = useQuery({
-        queryKey: ['users'],
+        queryKey: ['users', currentPage, currentLimit],
         queryFn: async () => {
-            const { data, error } = await supabase.from('profiles')
+            const result = await supabase.from('profiles')
               .select('*', { count: 'exact' })
+              .range((currentPage - 1) * currentLimit, currentPage * currentLimit - 1)
               .order('created_at');
             
-            if (error)
+            if (result.error)
               toast.error('Get User data failed', {
-                description: error.message,
+                description: result.error.message,
               });
             
-            return data;
+            return result;
         },
     });
 
     const filteredData = useMemo(() => {
-        return (users || []).map((users, index) => {
+        return (users?.data || []).map((users, index) => {
             return [
                 index+1,
-                users.id,
+                users.email,
                 users.name,
                 users.role,
-                ''
+                <DropdownAction menu={[
+                    {
+                        label: (
+                            <span className="flex items-center  gap-2"><HugeiconsIcon icon={Edit}></HugeiconsIcon> Edit</span>
+                        ),
+                        onClick() {
+                            
+                        },
+                        type: 'button',
+                    }, {
+                        label: (
+                            <span className="flex items-center text-red-500 gap-2"><HugeiconsIcon icon={Delete}></HugeiconsIcon> Delete</span>
+                        ),
+                        onClick() {
+                            toast.success('Delete user', {
+                                description: `User ${users.name} has been deleted`,
+                            });
+                        },
+                        variant: 'destructive',
+                        type: 'button',
+                    }
+                ]}/>
             ]
         });
     }, [users]);
+
+    const totalPage = useMemo(() => {
+        return users && users.count != null ? Math.ceil(users?.count / currentLimit) : 0;
+    },[users]);
 
     return (
         <div className="w-full">
@@ -69,7 +98,7 @@ export default function UserManagement() {
                     </Dialog>
                 </div>
             </div>
-            <DataTable header={USER_TABLE_HEADER} data={filteredData} isLoading={isLoading} />
+            <DataTable header={USER_TABLE_HEADER} data={filteredData} isLoading={isLoading} totalPage={totalPage} currentPage={currentPage} currentLimit={currentLimit} onChangePage={handleChangePage} onChangeLimit={handleChangeLimit} />
         </div>
     );
 }
