@@ -1,4 +1,7 @@
+import { LIMIT_LIST } from "@/constants/data-table-constant";
 import { Card } from "../ui/card";
+import { Label } from "../ui/label";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import DataTablePagination from "./data-table-pagination";
 
@@ -40,7 +43,26 @@ export default function DataTable({header, data, isLoading, currentLimit, curren
                 </Table>
             </Card>
             <div className="flex items-center justify-between">
-                <div></div>
+                <div>
+                    <Label>Display</Label>
+                    <Select value={currentLimit.toString()} onValueChange={(value) => onChangeLimit(Number(value))}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select a limit"/>
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>
+                                    Limit
+                                </SelectLabel>
+                                {
+                                    LIMIT_LIST.map((limit) => (
+                                        <SelectItem key={limit} value={limit.toString()}>{limit}</SelectItem>
+                                    ))
+                                }
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </div>
                 {totalPage > 1 &&
                     <div className="flex justify-end">
                         <DataTablePagination currentPage={currentPage} onChangePage={onChangePage} totalPage={totalPage}/>
